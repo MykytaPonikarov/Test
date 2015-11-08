@@ -2,6 +2,7 @@
   <library name="RXTXcomm">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/RXTXcomm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/com.mysql.jdbc_5.1.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

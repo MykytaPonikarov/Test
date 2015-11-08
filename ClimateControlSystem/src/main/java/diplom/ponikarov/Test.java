@@ -1,5 +1,8 @@
 package diplom.ponikarov;
 
+import diplom.ponikarov.db.MySqlConnectionManager;
+import diplom.ponikarov.entity.ClimateData;
+import diplom.ponikarov.repository.MySqlClimateDataDAO;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -144,15 +147,12 @@ public class Test implements SerialPortEventListener {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Test test = new Test();
-        if (test.initialize()) {
-            test.sendData("1");
-            Thread.sleep(1000);
-            test.sendData("1");
-            Thread.sleep(1000);
-            test.sendData("2");
-            Thread.sleep(1000);
-            test.close();
-        }
+        MySqlConnectionManager mySqlConnectionManager = new MySqlConnectionManager();
+        MySqlClimateDataDAO dao = new MySqlClimateDataDAO(mySqlConnectionManager);
+        ClimateData climateData = new ClimateData();
+        climateData.setHumidity(1);
+        climateData.setStatus("OK");
+        climateData.setTemperature(2);
+        dao.add(climateData);
     }
 }

@@ -15,6 +15,5 @@
       </Label>
       <Button fx:id="btn" layoutX="283.0" layoutY="246.0" mnemonicParsing="false" onAction="#doRequest" text="Button" />
       <TextArea fx:id="text_area" editable="false" layoutX="14.0" layoutY="53.0" prefHeight="218.0" prefWidth="162.0" />
-      <TextField fx:id="text_field" layoutX="225.0" layoutY="53.0" />
    </children>
 </AnchorPane>

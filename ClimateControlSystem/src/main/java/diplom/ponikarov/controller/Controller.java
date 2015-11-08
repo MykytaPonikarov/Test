@@ -1,5 +1,8 @@
 package diplom.ponikarov.controller;
 
+import diplom.ponikarov.db.MySqlConnectionManager;
+import diplom.ponikarov.parser.ClimateDataParser;
+import diplom.ponikarov.repository.MySqlClimateDataDAO;
 import gnu.io.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -19,6 +22,7 @@ public class Controller implements SerialPortEventListener {
     private InputStream serialIn;
     private OutputStream serialOut;
     private BufferedReader serialReader;
+    private MySqlClimateDataDAO climateDataDAO;
 
     @FXML
     TextArea text_area;
@@ -27,7 +31,6 @@ public class Controller implements SerialPortEventListener {
     TextField text_field;
 
     public Controller() {
-        System.out.println("constructor");
         initialize();
     }
 
@@ -39,8 +42,10 @@ public class Controller implements SerialPortEventListener {
 
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
+        System.out.println("=====================Serial event==========================");
         String response = getResponse(serialPortEvent);
-        text_area.appendText(response);
+        text_area.setText(response);
+        climateDataDAO.add(ClimateDataParser.parse(response));
         System.out.println(response);
     }
 
@@ -68,6 +73,7 @@ public class Controller implements SerialPortEventListener {
                     break;
             }
         } catch (Exception e) {
+            System.err.println("Exception. response: " + response);
             System.err.println(e.toString());
         }
         return response;
@@ -84,6 +90,8 @@ public class Controller implements SerialPortEventListener {
             serialReader = new BufferedReader(new InputStreamReader(serialIn));
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
+            climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
