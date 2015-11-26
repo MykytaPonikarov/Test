@@ -10,8 +10,8 @@ public class ClimateData implements Serializable {
     private static final long serialVersionUID = 647895229066704635L;
 
     private String status;
-    private int temperature;
-    private int humidity;
+    private float temperature;
+    private float humidity;
 
     public String getStatus() {
         return status;
@@ -21,19 +21,19 @@ public class ClimateData implements Serializable {
         this.status = status;
     }
 
-    public int getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
-    public int getHumidity() {
+    public float getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(float humidity) {
         this.humidity = humidity;
     }
 

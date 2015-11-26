@@ -25,8 +25,8 @@ public class MySqlClimateDataDAO implements ClimateDataDAO {
     public void add(ClimateData climateData) {
         try(PreparedStatement statement = connection.prepareStatement(INSERT_TO_CLIMATE_DATE)){
             statement.setString(1, climateData.getStatus());
-            statement.setInt(2, climateData.getTemperature());
-            statement.setInt(3, climateData.getHumidity());
+            statement.setFloat(2, climateData.getTemperature());
+            statement.setFloat(3, climateData.getHumidity());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

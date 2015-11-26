@@ -15,8 +15,8 @@ public class ClimateDataParser {
             String humidity = getData(dataResponseArray[1], "humidity");
             String temperature = getData(dataResponseArray[2], "temperature");
             climateData.setStatus(status);
-            climateData.setTemperature(Integer.valueOf(temperature));
-            climateData.setHumidity(Integer.valueOf(humidity));
+            climateData.setTemperature(Float.valueOf(temperature));
+            climateData.setHumidity(Float.valueOf(humidity));
             return climateData;
         }
         throw new IllegalArgumentException();
