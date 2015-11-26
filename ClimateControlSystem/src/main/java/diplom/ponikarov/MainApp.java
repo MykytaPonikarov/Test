@@ -17,10 +17,16 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        String fxmlFile = "/fxml/main.fxml";
+       /* String fxmlFile = "/fxml/main.fxml";
         FXMLLoader loader = new FXMLLoader();
-        Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+        Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
         stage.setTitle("Climate control");
+        stage.setScene(new Scene(root));
+        stage.show();*/
+        String fxmlFile = "/fxml/login.fxml";
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+        stage.setTitle("Login");
         stage.setScene(new Scene(root));
         stage.show();
     }
