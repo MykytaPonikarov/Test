@@ -2,7 +2,7 @@ package diplom.ponikarov.controller;
 
 import diplom.ponikarov.db.MySqlConnectionManager;
 import diplom.ponikarov.parser.ClimateDataParser;
-import diplom.ponikarov.repository.MySqlClimateDataDAO;
+import diplom.ponikarov.dao.mysql.MySqlClimateDataDAO;
 import gnu.io.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

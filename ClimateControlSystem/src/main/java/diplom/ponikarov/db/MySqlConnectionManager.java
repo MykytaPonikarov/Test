@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class MySqlConnectionManager implements ConnectionManager {
 
     public MySqlConnectionManager() {
-//        initContext();
+        initContext();
     }
 
     @Override

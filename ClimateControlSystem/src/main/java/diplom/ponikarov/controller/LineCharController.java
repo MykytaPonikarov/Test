@@ -1,6 +1,9 @@
 package diplom.ponikarov.controller;
 
-import javafx.fxml.Initializable;
+import diplom.ponikarov.dao.ClimateDataDAO;
+import diplom.ponikarov.dao.mysql.MySqlClimateDataDAO;
+import diplom.ponikarov.db.MySqlConnectionManager;
+import diplom.ponikarov.entity.ClimateData;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -9,10 +12,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.List;
 
-public class LineCharController implements Initializable {
+public class LineCharController {
+
+    private ClimateDataDAO climateDataDAO;
+
+    public LineCharController() {
+        init();
+    }
 
     public void loadLineChart(int controllerData) {
         Stage stage = new Stage();
@@ -22,8 +30,8 @@ public class LineCharController implements Initializable {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
 
-        xAxis.setLabel("Month");
-        yAxis.setLabel("Value");
+        xAxis.setLabel("Date");
+        yAxis.setLabel("Temperature/Humidity");
 
         final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Controller " + controllerData + " monitoring");
@@ -31,20 +39,12 @@ public class LineCharController implements Initializable {
         XYChart.Series temperature = new XYChart.Series();
         temperature.setName("Temperature");
 
-        temperature.getData().add(new XYChart.Data("21-11-1999", 31));
-        temperature.getData().add(new XYChart.Data("21-12-1999", 12));
-        temperature.getData().add(new XYChart.Data("22-12-1999", 20));
-        temperature.getData().add(new XYChart.Data("25-12-1999", 22));
-
         XYChart.Series humidity = new XYChart.Series();
         humidity.setName("Humidity");
 
-        humidity.getData().add(new XYChart.Data("21-11-1999", 31));
-        humidity.getData().add(new XYChart.Data("21-12-1999", 12));
-        humidity.getData().add(new XYChart.Data("22-12-1999", 20));
-        humidity.getData().add(new XYChart.Data("25-12-1999", 15));
-        humidity.getData().add(new XYChart.Data("27-12-1999", 22));
+        List<ClimateData> all = climateDataDAO.getAll();
 
+        draw(temperature, humidity, all);
 
         lineChart.getData().addAll(temperature, humidity);
         root.getChildren().add(lineChart);
@@ -54,8 +54,16 @@ public class LineCharController implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    private void draw(XYChart.Series temperature, XYChart.Series humidity, List<ClimateData> climateDataList) {
+        for (ClimateData climateData : climateDataList) {
+            System.out.println(climateData.getDate());
+            System.out.println(climateData.getDate().toString());
+            temperature.getData().add(new XYChart.Data(climateData.getDate().toString(), climateData.getTemperature()));
+            humidity.getData().add(new XYChart.Data(climateData.getDate().toString(), climateData.getHumidity()));
+        }
+    }
 
+    private void init() {
+        climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
     }
 }

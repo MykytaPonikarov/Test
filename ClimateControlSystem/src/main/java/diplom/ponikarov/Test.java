@@ -2,7 +2,7 @@ package diplom.ponikarov;
 
 import diplom.ponikarov.db.MySqlConnectionManager;
 import diplom.ponikarov.entity.ClimateData;
-import diplom.ponikarov.repository.MySqlClimateDataDAO;
+import diplom.ponikarov.dao.mysql.MySqlClimateDataDAO;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
