@@ -42,6 +42,7 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("initialize!!!!!!!!!!!!!!!!!!!");
         //fill combo box by controllers number
         List<Integer> controllersNumber = new ArrayList<>();
         controllersNumber.add(1);
@@ -60,7 +61,8 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void openControllerDetails() {
-        System.out.println(selectControllerNumber.getValue());
+        new LineCharController().loadLineChart(1);
+//        System.out.println(selectControllerNumber.getValue());
     }
 
     @FXML

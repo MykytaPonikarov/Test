@@ -4,6 +4,7 @@ import diplom.ponikarov.dao.ClimateDataDAO;
 import diplom.ponikarov.dao.mysql.MySqlClimateDataDAO;
 import diplom.ponikarov.db.MySqlConnectionManager;
 import diplom.ponikarov.entity.ClimateData;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -12,9 +13,11 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class LineCharController {
+public class LineCharController implements Initializable{
 
     private ClimateDataDAO climateDataDAO;
 
@@ -54,6 +57,11 @@ public class LineCharController {
 
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
     private void draw(XYChart.Series temperature, XYChart.Series humidity, List<ClimateData> climateDataList) {
         for (ClimateData climateData : climateDataList) {
             System.out.println(climateData.getDate());
@@ -65,6 +73,6 @@ public class LineCharController {
 
     private void init() {
 //        climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
-        climateDataDAO = new MySqlClimateDataDAO();
+//        climateDataDAO = new MySqlClimateDataDAO();
     }
 }
