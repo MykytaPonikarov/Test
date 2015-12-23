@@ -90,7 +90,8 @@ public class Controller implements SerialPortEventListener {
             serialReader = new BufferedReader(new InputStreamReader(serialIn));
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
-            climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
+//            climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
+            climateDataDAO = new MySqlClimateDataDAO();
 
         } catch (Exception e) {
             e.printStackTrace();

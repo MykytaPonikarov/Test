@@ -64,6 +64,7 @@ public class LineCharController {
     }
 
     private void init() {
-        climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
+//        climateDataDAO = new MySqlClimateDataDAO(new MySqlConnectionManager());
+        climateDataDAO = new MySqlClimateDataDAO();
     }
 }

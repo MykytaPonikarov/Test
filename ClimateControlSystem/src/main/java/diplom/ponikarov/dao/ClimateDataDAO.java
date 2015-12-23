@@ -15,4 +15,6 @@ public interface ClimateDataDAO {
     List<ClimateData> getAll();
 
     List<ClimateData> getAllByControllerNumberAndDateRange(int controllerNumber, Date fromDate, Date toDate);
+
+    List<ClimateData> getAllWithLimit(int limit);
 }

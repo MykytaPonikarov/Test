@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="diplom.ponikarov.controller.MainViewController">
+    <children>
+        <SplitPane dividerPositions="0.7889447236180904" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="598.0">
+                    <children>
+                        <TableView fx:id="tableId" layoutX="12.0" layoutY="24.0" prefHeight="285.0" prefWidth="576.0">
+                            <columns>
+                                <TableColumn fx:id="tableColumnControllerNumber" editable="false" prefWidth="103.0" text="Port number" />
+                                <TableColumn fx:id="tableColumnDate" editable="false" prefWidth="143.0" text="Date" />
+                                <TableColumn fx:id="tableColumnTemperature" editable="false" minWidth="0.0" prefWidth="108.0" text="Temperature" />
+                                <TableColumn fx:id="tableColumnHumidity" editable="false" prefWidth="99.0" text="Humidity" />
+                                <TableColumn fx:id="tableColumnStatus" editable="false" prefWidth="106.0" text="Status" />
+                            </columns>
+                        </TableView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="208.0" layoutY="4.0" prefHeight="17.0" prefWidth="183.0" text="History">
+                            <font>
+                                <Font name="Times New Roman" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="222.0" prefWidth="495.0">
+                    <children>
+                        <Label layoutX="23.0" layoutY="32.0" prefHeight="20.0" prefWidth="219.0" text="Select port number for managing:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="selectControllerNumber" layoutX="242.0" layoutY="30.0" prefHeight="25.0" prefWidth="77.0" />
+                  <Button layoutX="330.0" layoutY="30.0" mnemonicParsing="false" onAction="#openControllerDetails" prefHeight="25.0" prefWidth="70.0" text="Open" />
+                  <Button layoutX="422.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshHistoryData" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #7DEF25;" text="Refresh history data" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

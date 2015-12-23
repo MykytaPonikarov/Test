@@ -16,6 +16,17 @@ public class ClimateData implements Serializable {
     private int controllerNumber;
     private Date date;
 
+    public ClimateData() {
+    }
+
+    public ClimateData(int controllerNumber, Date date, float temperature, float humidity, String status) {
+        this.status = status;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.controllerNumber = controllerNumber;
+        this.date = date;
+    }
+
     public String getStatus() {
         return status;
     }

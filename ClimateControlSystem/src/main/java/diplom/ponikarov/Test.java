@@ -148,7 +148,8 @@ public class Test implements SerialPortEventListener {
 
     public static void main(String[] args) throws InterruptedException {
         MySqlConnectionManager mySqlConnectionManager = new MySqlConnectionManager();
-        MySqlClimateDataDAO dao = new MySqlClimateDataDAO(mySqlConnectionManager);
+//        MySqlClimateDataDAO dao = new MySqlClimateDataDAO(mySqlConnectionManager);
+        MySqlClimateDataDAO dao = new MySqlClimateDataDAO();
         ClimateData climateData = new ClimateData();
         climateData.setHumidity(1);
         climateData.setStatus("OK");
