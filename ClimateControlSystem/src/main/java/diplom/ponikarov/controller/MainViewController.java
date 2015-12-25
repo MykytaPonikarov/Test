@@ -1,10 +1,13 @@
 package diplom.ponikarov.controller;
 
+import diplom.ponikarov.WindowLoader;
 import diplom.ponikarov.entity.ClimateData;
 import diplom.ponikarov.service.ClimateDataService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -61,7 +64,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void openControllerDetails() {
-        new LineCharController().loadLineChart(1);
+        WindowLoader.getInstance().load("/fxml/controllerDetails.fxml", "Controller details", selectControllerNumber.getValue());
+//        ControllerDetailsController detailsController = load.getController();
+//        detailsController.setControllerNumber(selectControllerNumber.getValue());
+//        new ControllerDetailsController().loadLineChart(1);
 //        System.out.println(selectControllerNumber.getValue());
     }
 

@@ -1,5 +1,6 @@
 package diplom.ponikarov;
 
+import diplom.ponikarov.controller.ControllerDetailsController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,7 +23,7 @@ public class WindowLoader {
 
     public static WindowLoader getInstance() {
         if (windowLoader == null) {
-            return new WindowLoader();
+            windowLoader = new WindowLoader();
         }
         return windowLoader;
     }
@@ -38,21 +39,26 @@ public class WindowLoader {
     }
 
     public void load(String url, String title) {
-        try (InputStream fxmlStream = getClass().getResourceAsStream(url)) {
+        Parent root = load(url);
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 
+    public void load(String url, String title, int controllerNumber) {
+        try (InputStream fxmlStream = getClass().getResourceAsStream(url)) {
             FXMLLoader loader = new FXMLLoader();
             loader.setControllerFactory(APPLICATION_CONTEXT::getBean);
-
             Parent root = loader.load(fxmlStream);
+            ControllerDetailsController detailsController = loader.getController();
+            detailsController.setControllerNumber(controllerNumber);
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.show();
-
         } catch (IOException ioException) {
             throw new RuntimeException("Application loader. Exception --->>", ioException);
         }
     }
-
-
 }

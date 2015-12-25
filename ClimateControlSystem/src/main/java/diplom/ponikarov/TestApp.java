@@ -18,7 +18,7 @@ public class TestApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-//        String fxmlFile = "/fxml/window.fxml";
+//        String fxmlFile = "/fxml/mainWindow.fxml";
         String fxmlFile = "/fxml/login.fxml";
 
         WindowLoader.getInstance().load(fxmlFile, "Login");

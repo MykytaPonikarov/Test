@@ -28,8 +28,8 @@
                                 <Font name="Times New Roman" size="18.0" />
                             </font>
                         </Label>
-                        <Button layoutX="145.0" layoutY="133.0" mnemonicParsing="false" text="Show in range" />
-                        <Button layoutX="248.0" layoutY="133.0" mnemonicParsing="false" text="Generate file" />
+                        <Button layoutX="145.0" layoutY="133.0" mnemonicParsing="false" onAction="#showInRange" text="Show in range" />
+                        <Button layoutX="248.0" layoutY="133.0" mnemonicParsing="false" onAction="#generateFile" text="Generate file" />
                         <Label fx:id="controllerLabel12" alignment="CENTER" layoutX="14.0" layoutY="191.0" prefHeight="27.0" prefWidth="187.0" text="Set max temperature:">
                             <font>
                                 <Font name="Times New Roman" size="18.0" />
@@ -54,7 +54,7 @@
                         <TextField fx:id="minTemperature" layoutX="214.0" layoutY="222.0" prefHeight="25.0" prefWidth="84.0" />
                         <TextField fx:id="maxHumidity" layoutX="214.0" layoutY="254.0" prefHeight="25.0" prefWidth="84.0" />
                         <TextField fx:id="minHumidity" layoutX="214.0" layoutY="287.0" prefHeight="25.0" prefWidth="84.0" />
-                        <Button layoutX="215.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Apply" />
+                        <Button fx:id="apply" layoutX="215.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Apply" />
                         <Label fx:id="controllerLabel122" alignment="CENTER" layoutX="300.0" layoutY="191.0" prefHeight="27.0" prefWidth="27.0" text="C">
                             <font>
                                 <Font name="Times New Roman" size="18.0" />

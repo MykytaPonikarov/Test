@@ -5,12 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -36,7 +33,7 @@ public class LoginController implements Initializable {
         if ("admin".equals(login) && "admin".equals(password)) {
             ((Node) (event.getSource())).getScene().getWindow().hide();
 
-            WindowLoader.getInstance().load("/fxml/window.fxml", "Main window");
+            WindowLoader.getInstance().load("/fxml/mainWindow.fxml", "Main window");
 //            Stage stage = new Stage();
 //            stage.setTitle("Climate control");
 //            stage.setScene(new Scene(root));
