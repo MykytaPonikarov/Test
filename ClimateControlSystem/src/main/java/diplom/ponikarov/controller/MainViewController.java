@@ -1,28 +1,26 @@
 package diplom.ponikarov.controller;
 
-import diplom.ponikarov.WindowLoader;
+import diplom.ponikarov.ControllerViewLoader;
 import diplom.ponikarov.entity.ClimateData;
 import diplom.ponikarov.service.ClimateDataService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class MainViewController implements Initializable {
+public class MainViewController extends AbstractController implements Initializable {
 
     @FXML
     private TableView<ClimateData> tableId;
@@ -43,45 +41,45 @@ public class MainViewController implements Initializable {
     @Autowired
     private ClimateDataService climateDataService;
 
+    @Value("#{'${controllersNumber}'.split(',')}")
+    private List<Integer> controllersNumber;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("initialize!!!!!!!!!!!!!!!!!!!");
         //fill combo box by controllers number
-        List<Integer> controllersNumber = new ArrayList<>();
-        controllersNumber.add(1);
-        controllersNumber.add(2);
         selectControllerNumber.setItems(FXCollections.observableArrayList(controllersNumber));
 
         //fill table by climate data from db
-        tableColumnControllerNumber.setCellValueFactory(new PropertyValueFactory<>("controllerNumber"));
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        tableColumnTemperature.setCellValueFactory(new PropertyValueFactory<>("temperature"));
-        tableColumnHumidity.setCellValueFactory(new PropertyValueFactory<>("humidity"));
-        tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-//        doAction();
+        tableInitialize();
+
+        //load history data from repository
         refreshHistoryData();
     }
 
     @FXML
     public void openControllerDetails() {
-        WindowLoader.getInstance().load("/fxml/controllerDetails.fxml", "Controller details", selectControllerNumber.getValue());
-//        ControllerDetailsController detailsController = load.getController();
-//        detailsController.setControllerNumber(selectControllerNumber.getValue());
-//        new ControllerDetailsController().loadLineChart(1);
-//        System.out.println(selectControllerNumber.getValue());
+
+        ControllerDetailsController controller = (ControllerDetailsController) ControllerViewLoader.load("/fxml/controllerDetails.fxml");
+
+        Integer controllerNumber = selectControllerNumber.getValue();
+        controller.initControllerDetailsController(controllerNumber);
+
+        ControllerViewLoader.view(controller, "SerialController details");
     }
 
     @FXML
     public void refreshHistoryData() {
-//        List<ClimateData> data = climateDataService.getAllWithLimit(historyDataCount);
 
-        List<ClimateData> data = new ArrayList<>();
-        ClimateData climateData = new ClimateData(1, new Date(), 23, 40, "OK");
-        for (int i = 0; i < historyDataCount; i++) {
-            data.add(climateData);
-        }
+        List<ClimateData> data = climateDataService.getAllWithLimit(historyDataCount);
 
         tableId.setItems(FXCollections.observableArrayList(data));
     }
 
+    private void tableInitialize() {
+        tableColumnControllerNumber.setCellValueFactory(new PropertyValueFactory<>("controllerNumber"));
+        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tableColumnTemperature.setCellValueFactory(new PropertyValueFactory<>("temperature"));
+        tableColumnHumidity.setCellValueFactory(new PropertyValueFactory<>("humidity"));
+        tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
 }

@@ -34,9 +34,17 @@
     </bean>
 
     <bean id="historyDataCount" class="java.lang.Integer" factory-method="valueOf">
-        <constructor-arg value="${historyDataCount}" />
+        <constructor-arg value="${historyDataCount}"/>
     </bean>
 
-    <!--<bean id="climateDataService" class="diplom.ponikarov.service.ClimateDataService"/>-->
+    <bean id="fileGenerator" class="diplom.ponikarov.util.FileGeneratorUtil"/>
+
+    <bean id="configurationContainer" class="diplom.ponikarov.entity.ConfigurationContainer">
+        <property name="configurationMap">
+            <map/>
+        </property>
+    </bean>
+
+    <bean class="diplom.ponikarov.proccessor.ConfigurationLoader"/>
 
 </beans>

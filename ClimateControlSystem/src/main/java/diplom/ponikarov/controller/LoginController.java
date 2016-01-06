@@ -1,6 +1,6 @@
 package diplom.ponikarov.controller;
 
-import diplom.ponikarov.WindowLoader;
+import diplom.ponikarov.ControllerViewLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class LoginController implements Initializable {
+public class LoginController extends AbstractController implements Initializable {
 
     @FXML
     private Label msgLoginFailed;
@@ -31,14 +31,16 @@ public class LoginController implements Initializable {
         String login = inputLogin.getText();
         String password = inputPassword.getText();
         if ("admin".equals(login) && "admin".equals(password)) {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
 
-            WindowLoader.getInstance().load("/fxml/mainWindow.fxml", "Main window");
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            MainViewController controller = (MainViewController) ControllerViewLoader.load("/fxml/mainWindow.fxml");
+            ControllerViewLoader.view(controller, "Main window");
+
+//            ControllerViewLoader.getInstance().load("/fxml/mainWindow.fxml", "Main window");
 //            Stage stage = new Stage();
 //            stage.setTitle("Climate control");
 //            stage.setScene(new Scene(root));
 //            stage.show();
-
 
         } else {
             msgLoginFailed.setText("Invalid login data!!!");

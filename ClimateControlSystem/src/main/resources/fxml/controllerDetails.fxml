@@ -54,7 +54,7 @@
                         <TextField fx:id="minTemperature" layoutX="214.0" layoutY="222.0" prefHeight="25.0" prefWidth="84.0" />
                         <TextField fx:id="maxHumidity" layoutX="214.0" layoutY="254.0" prefHeight="25.0" prefWidth="84.0" />
                         <TextField fx:id="minHumidity" layoutX="214.0" layoutY="287.0" prefHeight="25.0" prefWidth="84.0" />
-                        <Button fx:id="apply" layoutX="215.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Apply" />
+                        <Button fx:id="apply" layoutX="215.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Apply" onAction="#apply"/>
                         <Label fx:id="controllerLabel122" alignment="CENTER" layoutX="300.0" layoutY="191.0" prefHeight="27.0" prefWidth="27.0" text="C">
                             <font>
                                 <Font name="Times New Roman" size="18.0" />
@@ -79,12 +79,12 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="596.0" prefWidth="902.0">
                     <children>
-                        <LineChart layoutX="4.0" layoutY="-2.0" prefHeight="624.0" prefWidth="808.0">
+                        <LineChart fx:id="lineChart" layoutX="4.0" layoutY="-2.0" prefHeight="624.0" prefWidth="808.0">
                             <xAxis>
-                                <CategoryAxis side="BOTTOM" />
+                                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                             </xAxis>
                             <yAxis>
-                                <NumberAxis side="LEFT" />
+                                <NumberAxis fx:id="yAxis" side="LEFT" />
                             </yAxis>
                         </LineChart>
                     </children>
