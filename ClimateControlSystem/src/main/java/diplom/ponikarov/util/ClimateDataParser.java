@@ -1,28 +1,29 @@
-package diplom.ponikarov.parser;
+package diplom.ponikarov.util;
 
 import diplom.ponikarov.entity.ClimateData;
+import org.springframework.stereotype.Component;
 
-/**
- * Created by Nikita on 03.11.2015.
- */
+@Component("climateDataParser")
 public class ClimateDataParser {
 
-    public static ClimateData parse(String data) {
+    public ClimateData parse(String data) {
         ClimateData climateData = new ClimateData();
         String[] dataResponseArray = data.split(";");
-        if (dataResponseArray.length == 3) {
+        if (dataResponseArray.length == 4) {
             String status = getData(dataResponseArray[0], "status");
             String humidity = getData(dataResponseArray[1], "humidity");
             String temperature = getData(dataResponseArray[2], "temperature");
+            String controller = getData(dataResponseArray[3], "controller");
             climateData.setStatus(status);
             climateData.setTemperature(Float.valueOf(temperature));
             climateData.setHumidity(Float.valueOf(humidity));
+            climateData.setControllerNumber(Integer.parseInt(controller));
             return climateData;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Invalid controller response format");
     }
 
-    private static String getData(String param, String paramName) {
+    private String getData(String param, String paramName) {
         if (param != null && param.contains(paramName)) {
             String[] statusArray = param.split(":");
             return statusArray[1];

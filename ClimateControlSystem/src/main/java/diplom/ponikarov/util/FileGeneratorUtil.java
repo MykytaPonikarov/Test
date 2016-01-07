@@ -4,7 +4,10 @@ import diplom.ponikarov.entity.ClimateData;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,9 +15,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
+@Component("fileGenerator")
 public class FileGeneratorUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileGeneratorUtil.class);
 
     @Value("${generateFileStorageLocation}")
     private String dir;
@@ -22,24 +27,22 @@ public class FileGeneratorUtil {
     private String dateFormat;
 
     public void generateFile(List<ClimateData> content) {
-        //Blank Document
+        LOGGER.debug("Generate file...");
         XWPFDocument document = new XWPFDocument();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         try {
-            //Write the Document in file system
             File dirFile = new File(dir);
             if (!dirFile.isDirectory()) {
                 dirFile.mkdirs();
             }
-            File outputFile = new File(dirFile.getAbsolutePath() + File.separator + simpleDateFormat.format(new Date()) + ".docx");
+            String pathname = dirFile.getAbsolutePath() + File.separator + simpleDateFormat.format(new Date()) + ".docx";
+            LOGGER.debug("File path name ---> {}", pathname);
+            File outputFile = new File(pathname);
             outputFile.createNewFile();
-            FileOutputStream out = new FileOutputStream(
-                    outputFile);
 
-            //create table
+            FileOutputStream out = new FileOutputStream(outputFile);
             XWPFTable table = document.createTable();
 
-            //create first row
             XWPFTableRow tableRowOne = table.getRow(0);
             tableRowOne.getCell(0).setText("Controller number");
             tableRowOne.addNewTableCell().setText("Status");
@@ -55,13 +58,10 @@ public class FileGeneratorUtil {
                 row.getCell(3).setText(String.valueOf(climateData.getHumidity()));
                 row.getCell(4).setText(String.valueOf(climateData.getDate()));
             }
-
             document.write(out);
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Exception when generate file with climate data. Exception: {}", e);
         }
     }
-
-
 }

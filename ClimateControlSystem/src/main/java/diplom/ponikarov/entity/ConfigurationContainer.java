@@ -1,8 +1,5 @@
 package diplom.ponikarov.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.Map;
 
 public class ConfigurationContainer {
@@ -23,5 +20,13 @@ public class ConfigurationContainer {
 
     public void setConfigurationMap(Map<Integer, ControllerConfiguration> configurationMap) {
         this.configurationMap = configurationMap;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ConfigurationContainer{");
+        sb.append("configurationMap=").append(configurationMap);
+        sb.append('}');
+        return sb.toString();
     }
 }

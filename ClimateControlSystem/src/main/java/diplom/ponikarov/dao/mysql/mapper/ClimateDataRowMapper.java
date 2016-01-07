@@ -6,9 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Mykyta Ponikarov on 12/23/2015.
- */
 public class ClimateDataRowMapper implements RowMapper<ClimateData> {
 
     @Override

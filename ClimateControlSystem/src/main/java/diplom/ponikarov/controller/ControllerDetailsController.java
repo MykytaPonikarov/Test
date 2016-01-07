@@ -3,6 +3,8 @@ package diplom.ponikarov.controller;
 import diplom.ponikarov.entity.ClimateData;
 import diplom.ponikarov.entity.ConfigurationContainer;
 import diplom.ponikarov.entity.ControllerConfiguration;
+import diplom.ponikarov.event.DataOutOfRangeEvent;
+import diplom.ponikarov.service.ArduinoService;
 import diplom.ponikarov.service.ClimateDataService;
 import diplom.ponikarov.service.ControllerConfigurationService;
 import diplom.ponikarov.util.FileGeneratorUtil;
@@ -15,6 +17,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +30,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.apache.logging.log4j.util.Strings.isBlank;
+
 @Component
 public class ControllerDetailsController extends AbstractController implements Initializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerDetailsController.class);
 
     @FXML
     private DatePicker fromDate;
@@ -57,53 +65,23 @@ public class ControllerDetailsController extends AbstractController implements I
     private ConfigurationContainer configurationContainer;
     @Autowired
     private ControllerConfigurationService controllerConfigurationService;
+    @Autowired
+    private ArduinoService arduinoService;
     private ControllerConfiguration configuration;
 
     private int controllerNumber;
-
-    public void loadLineChart() {
-//        Stage stage = new Stage();
-//        stage.setTitle("SerialController " + controllerData + " monitoring");
-//        Group root = new Group();
-
-//        final CategoryAxis xAxis = new CategoryAxis();
-//        final NumberAxis yAxis = new NumberAxis();
-//
-//        xAxis.setLabel("Date");
-//        yAxis.setLabel("Temperature/Humidity");
-//
-//        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-////        lineChart.setTitle("SerialController " + controllerData + " monitoring");
-//
-//        XYChart.Series temperature = new XYChart.Series();
-//        temperature.setName("Temperature");
-//
-//        XYChart.Series humidity = new XYChart.Series();
-//        humidity.setName("Humidity");
-//
-//        List<ClimateData> all = climateDataService.getAll();
-//
-//        draw(temperature, humidity, all);
-//
-//        lineChart.getData().addAll(temperature, humidity);
-//        LineChart lineChart = initLineChart();
-//        root.getChildren().add(lineChart);
-//
-//        stage.setScene(new Scene(root, 500, 400));
-//        stage.show();
-
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-
     @FXML
     public void showInRange() {
-        System.out.println("Show in range");
-        if (fromDate.getValue() != null && toDate.getValue() != null) {
+        LocalDate fromDateValue = fromDate.getValue();
+        LocalDate toDateValue = toDate.getValue();
+        LOGGER.debug("Show in range. From date: {}, to date: {}", fromDateValue, toDateValue);
+        if (fromDateValue != null && toDateValue != null) {
             Date from = getDateFromDatePicker(fromDate);
             Date to = getDateFromDatePicker(toDate);
             List<ClimateData> allByControllerNumberAndDateRange = climateDataService.getAllByControllerNumberAndDateRange(controllerNumber, from, to);
@@ -114,22 +92,29 @@ public class ControllerDetailsController extends AbstractController implements I
 
     @FXML
     public void generateFile() {
-        System.out.println("Generate file");
-        if (fromDate.getValue() != null && toDate.getValue() != null) {
+        LocalDate fromDateValue = fromDate.getValue();
+        LocalDate toDateValue = toDate.getValue();
+        LOGGER.debug("Generate file in range. From date: {}, to date: {}", fromDateValue, toDateValue);
+        List<ClimateData> climateDataContent;
+        if (fromDateValue != null && toDateValue != null) {
             Date from = getDateFromDatePicker(fromDate);
             Date to = getDateFromDatePicker(toDate);
-            List<ClimateData> allByControllerNumberAndDateRange = climateDataService.getAllByControllerNumberAndDateRange(controllerNumber, from, to);
-            fileGenerator.generateFile(allByControllerNumberAndDateRange);
+            climateDataContent = climateDataService.getAllByControllerNumberAndDateRange(controllerNumber, from, to);
+        } else {
+            climateDataContent = climateDataService.getAllByControllerNumber(controllerNumber);
         }
+        fileGenerator.generateFile(climateDataContent);
     }
 
     @FXML
-    public void apply() {
+    public void applyConfiguration() {
         String maxT = maxTemperature.getText();
         String maxH = maxHumidity.getText();
         String minT = minTemperature.getText();
         String minH = minHumidity.getText();
-        if (maxT != null && minT != null && maxH != null && minH != null) {
+        LOGGER.debug("Apply configuration. Max temperature: {}, min temperature: {}, max humidity: {}, min humidity: {}",
+                maxT, minT, maxH, minH);
+        if (!isBlank(maxT) && !isBlank(minT) && !isBlank(maxH) && !isBlank(minH)) {
             configuration.setMaxTemperature(Float.parseFloat(maxT));
             configuration.setMinTemperature(Float.parseFloat(minT));
             configuration.setMaxHumidity(Float.parseFloat(maxH));
@@ -137,6 +122,16 @@ public class ControllerDetailsController extends AbstractController implements I
             controllerConfigurationService.update(configuration);
         }
         setConfigurationFields();
+    }
+
+    @FXML
+    public void getCurrentData() {
+        LOGGER.debug("Get current data. Send data to controller. Controller number: {}", controllerNumber);
+        getView().fireEvent(new DataOutOfRangeEvent());
+        arduinoService.sendDataToController(String.valueOf(controllerNumber));
+        List<ClimateData> allByControllerNumberAndDateRange = climateDataService.getAllByControllerNumber(controllerNumber);
+        lineChart.getData().clear();
+        generateLineChart(allByControllerNumberAndDateRange);
     }
 
     public void initControllerDetailsController(int controllerNumber) {

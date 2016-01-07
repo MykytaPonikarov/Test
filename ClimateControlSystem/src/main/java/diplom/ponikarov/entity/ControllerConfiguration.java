@@ -47,4 +47,16 @@ public class ControllerConfiguration {
     public void setMinHumidity(float minHumidity) {
         this.minHumidity = minHumidity;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ControllerConfiguration{");
+        sb.append("controllerNumber=").append(controllerNumber);
+        sb.append(", maxTemperature=").append(maxTemperature);
+        sb.append(", minTemperature=").append(minTemperature);
+        sb.append(", maxHumidity=").append(maxHumidity);
+        sb.append(", minHumidity=").append(minHumidity);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -40,7 +40,11 @@ public class MySqlControllerConfigurationDAO implements ControllerConfigurationD
         ControllerConfiguration configuration = null;
         try {
             JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-            configuration = jdbcTemplate.queryForObject(SELECT_BY_CONTROLLER_NUMBER, new Object[]{controllerNumber}, new ControllerConfigurationRowMapper());
+
+            configuration = jdbcTemplate.queryForObject(SELECT_BY_CONTROLLER_NUMBER,
+                    new Object[]{controllerNumber},
+                    new ControllerConfigurationRowMapper());
+
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn("Controller configuration with number {} not exist", controllerNumber);
         }

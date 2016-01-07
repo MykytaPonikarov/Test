@@ -37,7 +37,7 @@
         <constructor-arg value="${historyDataCount}"/>
     </bean>
 
-    <bean id="fileGenerator" class="diplom.ponikarov.util.FileGeneratorUtil"/>
+    <!--<bean id="fileGenerator" class="diplom.ponikarov.util.FileGeneratorUtil"/>-->
 
     <bean id="configurationContainer" class="diplom.ponikarov.entity.ConfigurationContainer">
         <property name="configurationMap">
@@ -45,6 +45,6 @@
         </property>
     </bean>
 
-    <bean class="diplom.ponikarov.proccessor.ConfigurationLoader"/>
+    <bean class="diplom.ponikarov.loader.ConfigurationLoader"/>
 
 </beans>

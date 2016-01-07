@@ -1,159 +1,207 @@
 package diplom.ponikarov;
 
-import diplom.ponikarov.db.MySqlConnectionManager;
-import diplom.ponikarov.entity.ClimateData;
-import diplom.ponikarov.dao.mysql.MySqlClimateDataDAO;
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
+import javafx.animation.*;
+import javafx.application.Application;
+import javafx.event.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Enumeration;
+import java.util.Random;
 
+public class Test extends Application {
+    private static final int FIELD_SIZE = 10;
 
-public class Test implements SerialPortEventListener {
+    private static final Random random = new Random(42);
 
-    SerialPort serialPort = null;
+    @Override
+    public void start(Stage stage) throws Exception {
+        TilePane field = generateField();
 
-    private static final String PORT_NAMES[] = {
-            "/dev/tty.usbmodem", // Mac OS X
-            "/dev/usbdev",      // Linux
-            "/dev/tty",         // Linux
-            "/dev/serial",      // Linux
-            "COM3",             // Windows
-    };
+        Scene scene = new Scene(field);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
 
-    private String appName;
-    private BufferedReader input;
-    private OutputStream output;
+        field.addEventFilter(
+                LightningEvent.PLASMA_STRIKE,
+                event -> System.out.println(
+                        "Field filtered strike: " + event.getI() + ", " + event.getJ()
+                )
+        );
 
-    private static final int TIME_OUT = 1000; // Port open timeout
-    private static final int DATA_RATE = 9600; // Arduino serial port
+        field.addEventHandler(
+                LightningEvent.PLASMA_STRIKE,
+                event -> System.out.println(
+                        "Field handled strike: " + event.getI() + ", " + event.getJ()
+                )
+        );
 
-    public Test() {
-        appName = getClass().getName();
+        periodicallyStrikeRandomNodes(field);
     }
 
-    public boolean initialize() {
-        try {
-            CommPortIdentifier portId = null;
-            Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+    private void periodicallyStrikeRandomNodes(TilePane field) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0),
+                        event -> strikeRandomNode(field)
+                ),
+                new KeyFrame(
+                        Duration.seconds(2)
+                )
+        );
 
-            // Enumerate system ports and try connecting to Arduino over each
-            //
-            System.out.println("Trying:");
-            while (portId == null && portEnum.hasMoreElements()) {
-                // Iterate through your host computer's serial port IDs
-                //
-                CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-                System.out.println("   port" + currPortId.getName());
-                for (String portName : PORT_NAMES) {
-                    if (currPortId.getName().equals(portName)
-                            || currPortId.getName().startsWith(portName)) {
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
 
-                        // Try to connect to the Arduino on this port
-                        //
-                        // Open serial port
-                        serialPort = (SerialPort) currPortId.open(appName, TIME_OUT);
-                        portId = currPortId;
-                        System.out.println("Connected on port" + currPortId.getName());
-                        break;
-                    }
-                }
+    private void strikeRandomNode(TilePane field) {
+        LightningReactor struckNode = (LightningReactor)
+                field.getChildren()
+                        .get(
+                                random.nextInt(
+                                        FIELD_SIZE * FIELD_SIZE
+                                )
+                        );
+        LightningEvent lightningStrike = new LightningEvent(
+                this,
+                struckNode
+        );
+
+        struckNode.fireEvent(lightningStrike);
+    }
+
+    private TilePane generateField() {
+        TilePane field = new TilePane();
+        field.setPrefColumns(10);
+        field.setMinWidth(TilePane.USE_PREF_SIZE);
+        field.setMaxWidth(TilePane.USE_PREF_SIZE);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                field.getChildren().add(
+                        new LightningReactor(
+                                i, j,
+                                new StrikeEventHandler()
+                        )
+                );
             }
-
-            if (portId == null || serialPort == null) {
-                System.out.println("Oops... Could not connect to Arduino");
-                return false;
-            }
-
-            // set port parameters
-            serialPort.setSerialPortParams(DATA_RATE,
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE);
-
-            // add event listeners
-            serialPort.addEventListener(this);
-            serialPort.notifyOnDataAvailable(true);
-
-            // Give the Arduino some time
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ie) {
-            }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return false;
+        return field;
     }
 
-    public void sendData(String data) {
-        try {
-            System.out.println("Sending data: '" + data + "'");
+    private class LightningReactor extends Rectangle {
+        private static final int SIZE = 20;
+        private final int i;
+        private final int j;
 
-            output = serialPort.getOutputStream();
-            output.write(data.getBytes());
-        } catch (Exception e) {
-            System.err.println(e.toString());
-            System.exit(0);
+        private FillTransition fillTransition = new FillTransition(Duration.seconds(4));
+
+        public LightningReactor(int i, int j, EventHandler<? super LightningEvent> lightningEventHandler) {
+            super(SIZE, SIZE);
+
+            this.i = i;
+            this.j = j;
+
+            Color baseColor =
+                    (i + j) % 2 == 0
+                            ? Color.RED
+                            : Color.WHITE;
+            setFill(baseColor);
+
+            fillTransition.setFromValue(Color.YELLOW);
+            fillTransition.setToValue(baseColor);
+            fillTransition.setShape(this);
+
+            addEventHandler(
+                    LightningEvent.PLASMA_STRIKE,
+                    lightningEventHandler
+            );
         }
-    }
 
-    //
-    // This should be called when you stop using the port
-    //
-    public synchronized void close() {
-        if (serialPort != null) {
-            serialPort.removeEventListener();
-            serialPort.close();
+        public void strike() {
+            fillTransition.playFromStart();
+        }
+
+        public int getI() {
+            return i;
+        }
+
+        public int getJ() {
+            return j;
         }
     }
 
-    //
-    // Handle serial port event
-    //
-    public synchronized void serialEvent(SerialPortEvent oEvent) {
-        String response = getResponse(oEvent);
-        System.out.println("qqqqqqqqqqqqqqqqqqqq");
-        System.out.println(response);
-    }
+    private class StrikeEventHandler implements EventHandler<LightningEvent> {
+        @Override
+        public void handle(LightningEvent event) {
+            LightningReactor reactor = (LightningReactor) event.getTarget();
+            reactor.strike();
 
-    public String getResponse(SerialPortEvent oEvent) {
-        String response = null;
-        try {
-            switch (oEvent.getEventType()) {
-                case SerialPortEvent.DATA_AVAILABLE:
-                    if (input == null) {
-                        input = new BufferedReader(
-                                new InputStreamReader(
-                                        serialPort.getInputStream()));
-                    }
-                    response = input.readLine();
-                    break;
+            System.out.println("Reactor received strike: " + reactor.getI() + ", " + reactor.getJ());
 
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            System.err.println(e.toString());
+
+            // event.consume();  if event is consumed the handler for the parent node will not be invoked.
         }
-        return response;
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        MySqlConnectionManager mySqlConnectionManager = new MySqlConnectionManager();
-//        MySqlClimateDataDAO dao = new MySqlClimateDataDAO(mySqlConnectionManager);
-        MySqlClimateDataDAO dao = new MySqlClimateDataDAO();
-        ClimateData climateData = new ClimateData();
-        climateData.setHumidity(1);
-        climateData.setStatus("OK");
-        climateData.setTemperature(2);
-        dao.add(climateData);
+    static class LightningEvent extends Event {
+
+        private static final long serialVersionUID = 20121107L;
+
+        private int i, j;
+
+        public int getI() {
+            return i;
+        }
+
+        public int getJ() {
+            return j;
+        }
+
+        /**
+         * The only valid EventType for the CustomEvent.
+         */
+        public static final EventType<LightningEvent> PLASMA_STRIKE =
+                new EventType<>(Event.ANY, "PLASMA_STRIKE");
+
+        /**
+         * Creates a new {@code LightningEvent} with an event type of {@code PLASMA_STRIKE}.
+         * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
+         */
+        public LightningEvent() {
+            super(PLASMA_STRIKE);
+        }
+
+        /**
+         * Construct a new {@code LightningEvent} with the specified event source and target.
+         * If the source or target is set to {@code null}, it is replaced by the
+         * {@code NULL_SOURCE_TARGET} value. All LightningEvents have their type set to
+         * {@code PLASMA_STRIKE}.
+         *
+         * @param source    the event source which sent the event
+         * @param target    the event target to associate with the event
+         */
+        public LightningEvent(Object source, EventTarget target) {
+            super(source, target, PLASMA_STRIKE);
+
+            this.i = ((LightningReactor) target).getI();
+            this.j = ((LightningReactor) target).getJ();
+        }
+
+        @Override
+        public LightningEvent copyFor(Object newSource, EventTarget newTarget) {
+            return (LightningEvent) super.copyFor(newSource, newTarget);
+        }
+
+        @Override
+        public EventType<? extends LightningEvent> getEventType() {
+            return (EventType<? extends LightningEvent>) super.getEventType();
+        }
+
     }
+
 }
