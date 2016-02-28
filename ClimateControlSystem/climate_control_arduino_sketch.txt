@@ -1,0 +1,38 @@
+#include <dht11.h>
+dht11 DHT;
+#define DHT11_PIN 8
+char request;       // byte received on the serial port
+char request_example=49;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  if(Serial.available() > 0){
+    request = Serial.read();
+    if(request == request_example){
+      String status;
+      int chk;
+      chk = DHT.read(DHT11_PIN);    // READ DATA
+      switch (chk){
+        case DHTLIB_OK:
+                    status = "OK";
+                    break;
+        case DHTLIB_ERROR_CHECKSUM:
+                    status = "Checksum error";
+                    break;
+        case DHTLIB_ERROR_TIMEOUT:
+                    status = "Time out error";
+                    break;
+        default:
+                    status = "Unknown error";
+                    break;
+      }
+     // DISPLAT DATA
+      float humidity = DHT.humidity;
+      float temperature = DHT.temperature;
+      Serial.println("status:"+status+";humidity:"+humidity+";temperature:"+temperature+";controller:"+request);
+    }
+  }
+}

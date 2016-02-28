@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>diplom.ponikarov.scheduler.ControllerRequestScheduler</OriginalElement>
+  <nodes>
+    <node x="246.5" y="491.0">diplom.ponikarov.scheduler.ControllerRequestScheduler</node>
+    <node x="335.0" y="102.0">diplom.ponikarov.service.ArduinoService</node>
+    <node x="0.0" y="135.0">java.util.TimerTask</node>
+    <node x="104.0" y="0.0">java.lang.Runnable</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="diplom.ponikarov.scheduler.ControllerRequestScheduler" target="diplom.ponikarov.service.ArduinoService">
+      <point x="49.75" y="-59.5" />
+      <point x="395.75" y="466.0" />
+      <point x="534.5" y="466.0" />
+      <point x="0.0" y="169.5" />
+    </edge>
+    <edge source="java.util.TimerTask" target="java.lang.Runnable">
+      <point x="0.0" y="-136.5" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="diplom.ponikarov.scheduler.ControllerRequestScheduler" target="java.util.TimerTask">
+      <point x="-49.75" y="-59.5" />
+      <point x="296.25" y="466.0" />
+      <point x="157.5" y="466.0" />
+      <point x="0.0" y="136.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="288.5" y="535.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

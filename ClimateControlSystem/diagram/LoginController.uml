@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>diplom.ponikarov.controller.LoginController</OriginalElement>
+  <nodes>
+    <node x="111.5" y="269.0">diplom.ponikarov.controller.LoginController</node>
+    <node x="0.0" y="145.5">javafx.fxml.Initializable</node>
+    <node x="248.5" y="0.0">diplom.ponikarov.controller.Controller</node>
+    <node x="262.0" y="123.0">diplom.ponikarov.controller.AbstractController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="diplom.ponikarov.controller.AbstractController" target="diplom.ponikarov.controller.Controller">
+      <point x="0.0" y="-48.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="diplom.ponikarov.controller.LoginController" target="diplom.ponikarov.controller.AbstractController">
+      <point x="59.25" y="-81.0" />
+      <point x="289.25" y="244.0" />
+      <point x="339.0" y="244.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="diplom.ponikarov.controller.LoginController" target="javafx.fxml.Initializable">
+      <point x="-59.25" y="-81.0" />
+      <point x="170.75" y="244.0" />
+      <point x="121.0" y="244.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="215.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -127,7 +127,7 @@ public class ControllerDetailsController extends AbstractController implements I
     @FXML
     public void getCurrentData() {
         LOGGER.debug("Get current data. Send data to controller. Controller number: {}", controllerNumber);
-        getView().fireEvent(new DataOutOfRangeEvent());
+//        getView().fireEvent(new DataOutOfRangeEvent());
         arduinoService.sendDataToController(String.valueOf(controllerNumber));
         List<ClimateData> allByControllerNumberAndDateRange = climateDataService.getAllByControllerNumber(controllerNumber);
         lineChart.getData().clear();

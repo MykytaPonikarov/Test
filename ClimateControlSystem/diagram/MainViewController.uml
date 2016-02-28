@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>diplom.ponikarov.controller.MainViewController</OriginalElement>
+  <nodes>
+    <node x="0.0" y="146.5">javafx.fxml.Initializable</node>
+    <node x="848.3376623376626" y="381.7896825396826">diplom.ponikarov.dao.ClimateDataDAO</node>
+    <node x="22.5" y="271.0">diplom.ponikarov.controller.MainViewController</node>
+    <node x="250.5" y="0.0">diplom.ponikarov.controller.Controller</node>
+    <node x="509.28571428571456" y="360.2337662337663">diplom.ponikarov.service.ClimateDataService</node>
+    <node x="264.0" y="124.0">diplom.ponikarov.controller.AbstractController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="diplom.ponikarov.controller.MainViewController" target="diplom.ponikarov.service.ClimateDataService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="diplom.ponikarov.controller.AbstractController" target="diplom.ponikarov.controller.Controller">
+      <point x="0.0" y="-48.5" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="diplom.ponikarov.controller.MainViewController" target="diplom.ponikarov.controller.AbstractController">
+      <point x="104.75" y="-180.5" />
+      <point x="336.75" y="246.0" />
+      <point x="342.0" y="246.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="diplom.ponikarov.controller.MainViewController" target="javafx.fxml.Initializable">
+      <point x="-104.75" y="-180.5" />
+      <point x="127.25" y="246.0" />
+      <point x="122.0" y="246.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="diplom.ponikarov.service.ClimateDataService" target="diplom.ponikarov.dao.ClimateDataDAO">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8895705521472392" x="551.5" y="316.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

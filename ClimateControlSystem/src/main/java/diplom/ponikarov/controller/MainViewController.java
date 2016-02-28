@@ -64,10 +64,13 @@ public class MainViewController extends AbstractController implements Initializa
     @FXML
     public void openControllerDetails() {
         LOGGER.debug("Open controller details action");
-
+        Integer controllerNumber = selectControllerNumber.getValue();
+        if (controllerNumber == null) {
+            LOGGER.debug("Controller is undefined!!!");
+            return;
+        }
         ControllerDetailsController controller = (ControllerDetailsController) ControllerViewLoader.load("/fxml/controllerDetails.fxml");
 
-        Integer controllerNumber = selectControllerNumber.getValue();
         controller.initControllerDetailsController(controllerNumber);
 
         ControllerViewLoader.view(controller, "SerialController details");
